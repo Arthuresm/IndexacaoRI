@@ -45,10 +45,21 @@ public class IndiceLight extends Indice
 		arrFreqTermo = new int[initCap];
 		posicaoIndice = new HashMap<String,PosicaoVetor>();
 	}
+        
+        public int[] aumentaCapacidadeVetor (int[] vetor, double d){
+            int tamanho = (int) Math.round(vetor.length*(100+d)/100);
+            int [] newvet = new int [tamanho];
+            for(int i=0;i<vetor.length;i++){
+                newvet[i]=vetor[i];
+            }
+            return newvet;
+            
+        }
 	
 	@Override
 	public int getNumDocumentos()
 	{
+            
 
 	}
 
@@ -69,7 +80,16 @@ public class IndiceLight extends Indice
 	@Override
 	public void index(String termo,int docId,int freqTermo)
 	{
-
+            PosicaoVetor idDoTermo = posicaoIndice.get(termo); 
+            if(idDoTermo == null){
+                lastTermId = arrTermId[lastIdx]; 
+                posicaoIndice.put(termo, new PosicaoVetor(lastTermId+1));
+                if(arrTermId.length-1 == lastIdx){
+                    aumentaCapacidadeVetor(arrTermId,10);
+                    aumentaCapacidadeVetor(arrDocId,10);
+                    aumentaCapacidadeVetor(arrFreqTermo,10);
+                }
+            }
 		
 		
 		

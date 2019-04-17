@@ -94,26 +94,26 @@ public class IndiceSimples extends Indice
                         //  wtfffff se ao percorrer occurence, nao encontramos o docID dentro de numDocs faz numDocs(docId) 
                         if(!numDocs.contains(occurence.get(i).getDocId())){
                             numDocs.add(occurence.get(i).getDocId());
-                        } i++;
+                        } 
+                        i+=1;
                     }
                 }
-          
             }
+            return numDocs.size();
 	}
 	
 	@Override
 	public Set<String> getListTermos()
 	{
-
+            Set <String> chaves = mapIndice.keySet();
+            return chaves;
 	}	
 	
 	@Override
 	public List<Ocorrencia> getListOccur(String termo)
 	{
-
-	}	
-	
-
-
+            List<Ocorrencia> occurence = mapIndice.get(termo);
+            return occurence; 
+        }
 
 }
