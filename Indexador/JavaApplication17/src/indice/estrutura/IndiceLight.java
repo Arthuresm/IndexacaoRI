@@ -3,6 +3,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -81,17 +82,41 @@ public class IndiceLight extends Indice
 	public void index(String termo,int docId,int freqTermo)
 	{
             PosicaoVetor idDoTermo = posicaoIndice.get(termo); 
+            
+            int[] arrDocId = this.arrDocId;
+            int[] arrTermId = this.arrTermId; 
+            int[] arrFreqTermo = this.arrFreqTermo;
+            
+            //Caso em que nao existe o termo no map
             if(idDoTermo == null){
                 lastTermId = arrTermId[lastIdx]; 
-                posicaoIndice.put(termo, new PosicaoVetor(lastTermId+1));
+                PosicaoVetor aux = new PosicaoVetor(lastTermId+1);
+//                aux.setNumDocumentos(1);
+//                aux.setPosInicial(lastIdx+1);
+                posicaoIndice.put(termo, aux);
                 if(arrTermId.length-1 == lastIdx){
-                    aumentaCapacidadeVetor(arrTermId,10);
-                    aumentaCapacidadeVetor(arrDocId,10);
-                    aumentaCapacidadeVetor(arrFreqTermo,10);
+                    arrTermId = aumentaCapacidadeVetor(arrTermId,10);
+                    arrDocId = aumentaCapacidadeVetor(arrDocId,10);
+                    arrFreqTermo = aumentaCapacidadeVetor(arrFreqTermo,10);
                 }
+                arrTermId[lastIdx+1] = lastTermId + 1;
+                arrDocId[lastIdx+1] = docId; 
+                arrFreqTermo[lastIdx+1] = freqTermo; 
+                setArrs(arrDocId, arrTermId, arrFreqTermo);
+                System.gc();
+            }else{
+                //O termo ja existe
+                if(arrTermId.length-1 == lastIdx){
+                    arrTermId = aumentaCapacidadeVetor(arrTermId,10);
+                    arrDocId = aumentaCapacidadeVetor(arrDocId,10);
+                    arrFreqTermo = aumentaCapacidadeVetor(arrFreqTermo,10);
+                }
+                arrTermId[lastIdx+1] = idDoTermo.getIdTermo();
+                arrDocId[lastIdx+1] = docId; 
+                arrFreqTermo[lastIdx+1] = freqTermo; 
+                setArrs(arrDocId, arrTermId, arrFreqTermo);
+                System.gc();    
             }
-		
-		
 		
 	}
 
@@ -133,8 +158,14 @@ public class IndiceLight extends Indice
 	 */
 	@Override
 	public void concluiIndexacao(){
-
-		
+            ordenaIndice();
+            Set<String> keys = posicaoIndice.keySet();
+            Iterator<String> keyAsIterator = keys.iterator();
+             while (keyAsIterator.hasNext()){
+                    String it = keyAsIterator.next();
+                    PosicaoVetor aux = posicaoIndice.get(it).setPosInicial();
+                     
+             } 
 
 	}
 
