@@ -60,8 +60,14 @@ public class IndiceLight extends Indice
 	@Override
 	public int getNumDocumentos()
 	{
+            ArrayList<Integer> aux = new ArrayList<Integer>();
+            for(int i = 0; i< arrDocId.length; i++){
+                if(!aux.contains(arrDocId[i])){
+                    aux.add(arrDocId[i]);
+                }
+            }
+            return aux.size();
             
-
 	}
 
 	/**
@@ -128,19 +134,53 @@ public class IndiceLight extends Indice
 	@Override
 	public Map<String,Integer> getNumDocPerTerm()
 	{
-
+            Map<String,Integer> numDocTerm = new HashMap<String,Integer>();
+               
+            
+            Set<String> keys = posicaoIndice.keySet();
+            Iterator<String> keyAsIterator = keys.iterator();
+            
+            
+            while (keyAsIterator.hasNext()){
+                String it = keyAsIterator.next();
+                numDocTerm.put(it, posicaoIndice.get(it).getNumDocumentos());
+                
+            }
+            return numDocTerm;
 	}
 	
 	@Override
 	public Set<String> getListTermos()
 	{
-
+            Map<String,Integer> numDocTerm = new HashMap<String,Integer>();    
+            Set<String> keys = posicaoIndice.keySet();
+            
+            return keys;
 	}
 	
 	@Override
 	public List<Ocorrencia> getListOccur(String termo)
 	{
+            Map<String,Integer> numDocTerm = new HashMap<String,Integer>();
+            Set<String> keys = posicaoIndice.keySet();
+            Iterator<String> keyAsIterator = keys.iterator();
+            List<Ocorrencia> listaOcc = new List<Ocorrencia>();            
+            
+            int docAtual = -1;
+            int freq = -1;
+            
+            int id = posicaoIndice.get(termo).getIdTermo();
+            for(int i=0; i < arrDocId.length;i++){
+                if(arrTermId[i] == id){
+                    docAtual = arrDocId[i];
+                    freq = arrFreqTermo[i];
+                    
+                    //Paramos aqui
+                }
+                
 
+            }
+            
 	}
 	
 	/**
@@ -161,12 +201,26 @@ public class IndiceLight extends Indice
             ordenaIndice();
             Set<String> keys = posicaoIndice.keySet();
             Iterator<String> keyAsIterator = keys.iterator();
-             while (keyAsIterator.hasNext()){
-                    String it = keyAsIterator.next();
-                    PosicaoVetor aux = posicaoIndice.get(it).setPosInicial();
-                     
-             } 
-
+            int posInicial = 0;
+            int posIndex = 0;
+            int aux = -2; 
+            ArrayList <Integer> numDocs = new ArrayList<Integer>(); 
+            PosicaoVetor[] arrTermoPorId = new PosicaoVetor[lastTermId+1]; 
+            
+            while (keyAsIterator.hasNext()){
+                String it = keyAsIterator.next();
+                if(aux != posicaoIndice.get(it).getIdTermo()){
+                    posInicial = arrTermId[posIndex];
+                    posicaoIndice.get(it).setPosInicial(posInicial);
+                    posicaoIndice.get(it).setNumDocumentos(numDocs.size());
+                    arrTermoPorId[posicaoIndice.get(it).getIdTermo()] = posicaoIndice.get(it);
+                    numDocs.clear();
+                }
+                if(!numDocs.contains(arrDocId[posIndex])){
+                    numDocs.add(arrDocId[posIndex]); 
+                }
+                posIndex+=1;
+            }
 	}
 
 	public void ordenaIndice()
