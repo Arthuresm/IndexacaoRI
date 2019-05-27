@@ -15,13 +15,13 @@ import indice.estrutura.IndiceLight;
 public class Teste {
     
     public static void main(String[] args){
-        //TesteEstruturaIndice simples = new TesteEstruturaIndice();
-        //simples.iniciaIndice();
+        TesteEstruturaIndice simples = new TesteEstruturaIndice();
+        simples.iniciaIndice();
         
         TesteIndiceLight light = new TesteIndiceLight();
         light.testOrdenacao();
         
-        //TestePerformance perf = new TestePerformance();
-        //perf.testIndexPerformance();
+        TestePerformance perf = new TestePerformance();
+        perf.testIndexPerformance();
     }
 }

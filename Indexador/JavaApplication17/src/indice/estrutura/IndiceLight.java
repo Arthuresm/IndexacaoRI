@@ -95,7 +95,12 @@ public class IndiceLight extends Indice
             
             //Caso em que nao existe o termo no map
             if(idDoTermo == null){
-                lastTermId = arrTermId[lastIdx]; 
+                if(lastIdx != -1)
+                    lastTermId = arrTermId[lastIdx];
+                else{
+                    lastIdx = 0;
+                    lastTermId = 1;                    
+                }
                 PosicaoVetor aux = new PosicaoVetor(lastTermId+1);
 //                aux.setNumDocumentos(1);
 //                aux.setPosInicial(lastIdx+1);
