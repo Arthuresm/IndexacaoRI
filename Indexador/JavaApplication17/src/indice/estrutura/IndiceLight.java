@@ -164,22 +164,24 @@ public class IndiceLight extends Indice
             Map<String,Integer> numDocTerm = new HashMap<String,Integer>();
             Set<String> keys = posicaoIndice.keySet();
             Iterator<String> keyAsIterator = keys.iterator();
-            List<Ocorrencia> listaOcc = new List<Ocorrencia>();            
-            
+            ArrayList<Ocorrencia> listaOcc = new ArrayList<Ocorrencia>();            
+
             int docAtual = -1;
             int freq = -1;
-            
             int id = posicaoIndice.get(termo).getIdTermo();
+            int numDoc = getNumDocumentos();
             for(int i=0; i < arrDocId.length;i++){
                 if(arrTermId[i] == id){
-                    docAtual = arrDocId[i];
-                    freq = arrFreqTermo[i];
-                    
+                    for(int j=0; j < numDoc; j++){
+                        docAtual = arrDocId[i+j];
+                        freq = arrFreqTermo[i+j];
+                        listaOcc.add(new Ocorrencia(docAtual,freq));
+                    }
                     //Paramos aqui
                 }
-                
-
             }
+            
+            return listaOcc;//pode ocorrer ponteiro nulo
             
 	}
 	
