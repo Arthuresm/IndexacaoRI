@@ -18,7 +18,7 @@ public class Teste {
         TesteEstruturaIndice simples = new TesteEstruturaIndice();
         simples.iniciaIndice();
         
-        TesteIndiceLight light = new TesteIndiceLight();
+        TesteIndiceLight light = new TesteIndiceLight();;
         light.testOrdenacao();
         
         TestePerformance perf = new TestePerformance();
