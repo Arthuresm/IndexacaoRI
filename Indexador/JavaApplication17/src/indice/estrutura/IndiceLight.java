@@ -226,12 +226,15 @@ public class IndiceLight extends Indice
 	}
         
         public void list(){
+            System.out.println("Apresentando ID's");
             for(int i=0; i < lastIdx; i++ ){
                 System.out.println(arrTermId[i]);
             }
+            System.out.println("Apresentando DOC ID's");
             for(int i=0; i < lastIdx; i++ ){
                 System.out.println(arrDocId[i]);
             }
+            System.out.println("Apresentando FREQ");
             for(int i=0; i < lastIdx; i++ ){
                 System.out.println(arrFreqTermo[i]);
             }
