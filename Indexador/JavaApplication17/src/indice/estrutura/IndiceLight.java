@@ -60,12 +60,15 @@ public class IndiceLight extends Indice
 	@Override
 	public int getNumDocumentos()
 	{
+            
             ArrayList<Integer> aux = new ArrayList<Integer>();
-            for(int i = 0; i< arrDocId.length; i++){
+            for(int i = 0; i< lastIdx; i++){
+                
                 if(!aux.contains(arrDocId[i])){
                     aux.add(arrDocId[i]);
                 }
             }
+            
             return aux.size();
             
 	}
@@ -95,39 +98,22 @@ public class IndiceLight extends Indice
             
             //Caso em que nao existe o termo no map
             if(idDoTermo == null){
-                if(lastIdx != -1)
-                    lastTermId = arrTermId[lastIdx];
-                else{
-                    lastIdx = 0;
-                    lastTermId = 1;                    
-                }
-                PosicaoVetor aux = new PosicaoVetor(lastTermId+1);
-//                aux.setNumDocumentos(1);
-//                aux.setPosInicial(lastIdx+1);
-                posicaoIndice.put(termo, aux);
-                if(arrTermId.length-1 == lastIdx){
-                    arrTermId = aumentaCapacidadeVetor(arrTermId,10);
-                    arrDocId = aumentaCapacidadeVetor(arrDocId,10);
-                    arrFreqTermo = aumentaCapacidadeVetor(arrFreqTermo,10);
-                }
-                arrTermId[lastIdx+1] = lastTermId + 1;
-                arrDocId[lastIdx+1] = docId; 
-                arrFreqTermo[lastIdx+1] = freqTermo; 
-                setArrs(arrDocId, arrTermId, arrFreqTermo);
-                System.gc();
-            }else{
-                //O termo ja existe
-                if(arrTermId.length-1 == lastIdx){
-                    arrTermId = aumentaCapacidadeVetor(arrTermId,10);
-                    arrDocId = aumentaCapacidadeVetor(arrDocId,10);
-                    arrFreqTermo = aumentaCapacidadeVetor(arrFreqTermo,10);
-                }
-                arrTermId[lastIdx+1] = idDoTermo.getIdTermo();
-                arrDocId[lastIdx+1] = docId; 
-                arrFreqTermo[lastIdx+1] = freqTermo; 
-                setArrs(arrDocId, arrTermId, arrFreqTermo);
-                System.gc();    
+                lastTermId += 1;
+                idDoTermo = new PosicaoVetor(lastTermId);
+                posicaoIndice.put(termo, idDoTermo);
+                
             }
+            if(arrTermId.length-1 == lastIdx){
+                arrTermId = aumentaCapacidadeVetor(arrTermId,10);
+                arrDocId = aumentaCapacidadeVetor(arrDocId,10);
+                arrFreqTermo = aumentaCapacidadeVetor(arrFreqTermo,10);
+            }
+            arrTermId[lastIdx+1] = lastTermId;
+            arrDocId[lastIdx+1] = docId; 
+            arrFreqTermo[lastIdx+1] = freqTermo; 
+            setArrs(arrDocId, arrTermId, arrFreqTermo);
+            System.gc();       
+            
 		
 	}
 
@@ -148,6 +134,7 @@ public class IndiceLight extends Indice
             
             while (keyAsIterator.hasNext()){
                 String it = keyAsIterator.next();
+                System.out.println("Termo " + it + " NumDocs = " + posicaoIndice.get(it).getNumDocumentos());
                 numDocTerm.put(it, posicaoIndice.get(it).getNumDocumentos());
                 
             }
@@ -166,27 +153,28 @@ public class IndiceLight extends Indice
 	@Override
 	public List<Ocorrencia> getListOccur(String termo)
 	{
-            Map<String,Integer> numDocTerm = new HashMap<String,Integer>();
-            Set<String> keys = posicaoIndice.keySet();
-            Iterator<String> keyAsIterator = keys.iterator();
-            ArrayList<Ocorrencia> listaOcc = new ArrayList<Ocorrencia>();            
-
-            int docAtual = -1;
-            int freq = -1;
-            int id = posicaoIndice.get(termo).getIdTermo();
-            int numDoc = getNumDocumentos();
-            for(int i=0; i < arrDocId.length;i++){
-                if(arrTermId[i] == id){
-                    for(int j=0; j < numDoc; j++){
-                        docAtual = arrDocId[i+j];
-                        freq = arrFreqTermo[i+j];
-                        listaOcc.add(new Ocorrencia(docAtual,freq));
+            PosicaoVetor aux = posicaoIndice.get(termo); //Obtendo ID do termo e Num de Docs que ele ocorre
+            List<Ocorrencia> listaOcc = new ArrayList<Ocorrencia>();
+            if(aux != null){
+                int id = aux.getIdTermo();
+                int numDocs = aux.getNumDocumentos();
+                int coletados = 0;
+                int i = 0;
+                while(coletados != numDocs){
+                    if( arrTermId[i] == id){
+                        int j = 0;
+                        while( coletados != numDocs ){
+                            listaOcc.add(new Ocorrencia(arrDocId[i + j], arrFreqTermo[i + j]));
+                            
+                            coletados++;
+                            j++;
+                        }
                     }
-                    //Paramos aqui
+                    i++;
                 }
             }
             
-            return listaOcc;//pode ocorrer ponteiro nulo
+            return listaOcc;
             
 	}
 	
@@ -205,7 +193,9 @@ public class IndiceLight extends Indice
 	 */
 	@Override
 	public void concluiIndexacao(){
+            System.out.println("Teste antes de ordenar");
             ordenaIndice();
+            System.out.println("Teste depois de ordenar");
             Set<String> keys = posicaoIndice.keySet();
             Iterator<String> keyAsIterator = keys.iterator();
             int posInicial = 0;
@@ -220,7 +210,8 @@ public class IndiceLight extends Indice
                     posInicial = arrTermId[posIndex];
                     posicaoIndice.get(it).setPosInicial(posInicial);
                     posicaoIndice.get(it).setNumDocumentos(numDocs.size());
-                    arrTermoPorId[posicaoIndice.get(it).getIdTermo()] = posicaoIndice.get(it);
+                    
+                    arrTermoPorId[posicaoIndice.get(it).getIdTermo()-1] = posicaoIndice.get(it);
                     numDocs.clear();
                 }
                 if(!numDocs.contains(arrDocId[posIndex])){

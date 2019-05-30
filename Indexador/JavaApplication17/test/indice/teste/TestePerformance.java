@@ -18,7 +18,7 @@ public class TestePerformance {
 	@Test
 	public void testIndexPerformance() {
 		long usedMemNow,usedMemBefore;
-		//indiceTeste = new IndiceSimples();
+//		indiceTeste = new IndiceSimples();
 		indiceTeste = new IndiceLight(15000);
 		
 		
@@ -78,7 +78,7 @@ public class TestePerformance {
                                 //System.out.println("Proximo doc!");
 			}
                 System.out.println("Concluindo indexacao!");
-		//indiceTeste.concluiIndexacao();
+		indiceTeste.concluiIndexacao();
 		
 		//System.out.println(indiceTeste);
 		System.out.println("Count: "+count);

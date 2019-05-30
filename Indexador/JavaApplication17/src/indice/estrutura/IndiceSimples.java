@@ -37,10 +37,12 @@ public class IndiceSimples extends Indice
             if(termo!=null){
                 // Caso em que o termo ja existe dentro do mapIndice
                 if(mapIndice.containsKey(termo)){
+                   
                    occurence = mapIndice.get(termo);
                    Iterator<Ocorrencia> ocorrenciaAsIterator = occurence.iterator();
                    while(ocorrenciaAsIterator.hasNext()){
                         Ocorrencia it = ocorrenciaAsIterator.next();
+                        
                         if(it.getDocId()==docId){
                             it.setFreq(freqTermo);
                             mapIndice.remove(termo);
@@ -48,11 +50,15 @@ public class IndiceSimples extends Indice
                             break;
                         }
                    }
+                   Ocorrencia aux = new Ocorrencia(docId, freqTermo);
+                   occurence.add(aux);
+                   mapIndice.put(termo, occurence);
                 }
                 else { //Caso em que o termo ainda nao existe no mapIndice
                     Ocorrencia oc = new Ocorrencia(docId, freqTermo);
                     occurence.add(oc);
                     mapIndice.put(termo, occurence);
+                    
                 }                
             }
             
@@ -91,8 +97,9 @@ public class IndiceSimples extends Indice
                     List<Ocorrencia> occurence = mapIndice.get(it);
                     int i = 0;
                     while(i < occurence.size()){
-                        //  wtfffff se ao percorrer occurence, nao encontramos o docID dentro de numDocs faz numDocs(docId) 
+                        
                         if(!numDocs.contains(occurence.get(i).getDocId())){
+                            
                             numDocs.add(occurence.get(i).getDocId());
                         } 
                         i+=1;
