@@ -64,6 +64,7 @@ public class TesteEstruturaIndice {
 	}
 	@Test
 	public void testGetNumDocPerTerm() {
+                 indiceTeste.concluiIndexacao();
 		 Map<String,Integer> mapNumDocPerTerm = indiceTeste.getNumDocPerTerm();
 		 //casa apareceu em dois documentos
 		 assertEquals(2,(int)mapNumDocPerTerm.get("casa"));

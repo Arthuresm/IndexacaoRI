@@ -19,14 +19,14 @@ public class Teste {
         simples.iniciaIndice();
         simples.testGetNumDocumentos();
         simples.testGetListTermos();
-//        simples.testGetNumDocPerTerm();
+        simples.testGetNumDocPerTerm();
 //        simples.testGetListOccur();
         
 //        TesteIndiceLight light = new TesteIndiceLight();
 //        light.testOrdenacao();
 //        
 //        
-        TestePerformance perf = new TestePerformance();
-        perf.testIndexPerformance();
+//        TestePerformance perf = new TestePerformance();
+//        perf.testIndexPerformance();
     }
 }

@@ -102,15 +102,18 @@ public class IndiceLight extends Indice
                 idDoTermo = new PosicaoVetor(lastTermId);
                 posicaoIndice.put(termo, idDoTermo);
                 
+            }else{
+                
             }
             if(arrTermId.length-1 == lastIdx){
                 arrTermId = aumentaCapacidadeVetor(arrTermId,10);
                 arrDocId = aumentaCapacidadeVetor(arrDocId,10);
                 arrFreqTermo = aumentaCapacidadeVetor(arrFreqTermo,10);
             }
-            arrTermId[lastIdx+1] = lastTermId;
-            arrDocId[lastIdx+1] = docId; 
-            arrFreqTermo[lastIdx+1] = freqTermo; 
+            lastIdx += 1;
+            arrTermId[lastIdx] = lastTermId;
+            arrDocId[lastIdx] = docId; 
+            arrFreqTermo[lastIdx] = freqTermo; 
             setArrs(arrDocId, arrTermId, arrFreqTermo);
             System.gc();       
             
@@ -134,7 +137,7 @@ public class IndiceLight extends Indice
             
             while (keyAsIterator.hasNext()){
                 String it = keyAsIterator.next();
-                System.out.println("Termo " + it + " NumDocs = " + posicaoIndice.get(it).getNumDocumentos());
+//                System.out.println("Termo " + it + " NumDocs = " + posicaoIndice.get(it).getNumDocumentos());
                 numDocTerm.put(it, posicaoIndice.get(it).getNumDocumentos());
                 
             }
@@ -211,7 +214,7 @@ public class IndiceLight extends Indice
                     posicaoIndice.get(it).setPosInicial(posInicial);
                     posicaoIndice.get(it).setNumDocumentos(numDocs.size());
                     
-                    arrTermoPorId[posicaoIndice.get(it).getIdTermo()-1] = posicaoIndice.get(it);
+                    arrTermoPorId[posicaoIndice.get(it).getIdTermo()] = posicaoIndice.get(it);
                     numDocs.clear();
                 }
                 if(!numDocs.contains(arrDocId[posIndex])){
@@ -219,8 +222,22 @@ public class IndiceLight extends Indice
                 }
                 posIndex+=1;
             }
+            list();
 	}
-
+        
+        public void list(){
+            for(int i=0; i < lastIdx; i++ ){
+                System.out.println(arrTermId[i]);
+            }
+            for(int i=0; i < lastIdx; i++ ){
+                System.out.println(arrDocId[i]);
+            }
+            for(int i=0; i < lastIdx; i++ ){
+                System.out.println(arrFreqTermo[i]);
+            }
+            
+        }
+        
 	public void ordenaIndice()
 	{
 		quickSort(0, lastIdx);
