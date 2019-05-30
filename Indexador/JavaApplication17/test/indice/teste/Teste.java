@@ -17,9 +17,10 @@ public class Teste {
     public static void main(String[] args){
         TesteEstruturaIndice simples = new TesteEstruturaIndice();
         simples.iniciaIndice();
-        simples.testGetNumDocumentos();
-        simples.testGetListTermos();
-        simples.testGetNumDocPerTerm();
+        
+//        simples.testGetNumDocumentos();
+//        simples.testGetListTermos();
+//        simples.testGetNumDocPerTerm();
 //        simples.testGetListOccur();
         
 //        TesteIndiceLight light = new TesteIndiceLight();

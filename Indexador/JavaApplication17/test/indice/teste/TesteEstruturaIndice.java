@@ -15,7 +15,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TesteEstruturaIndice {
-	private Indice indiceTeste ;
+	private IndiceLight indiceTeste ; //Depois alterar para indice
 	
 	@Before
 	public void iniciaIndice(){
@@ -41,15 +41,19 @@ public class TesteEstruturaIndice {
 		
 		//vermelho apareceu 1 vez no doc. 3
 		indiceTeste.index("vermelho",3,1);
-		
+                //System.out.println("Antes do conclui index");
+		//indiceTeste.list();
 		indiceTeste.concluiIndexacao();
+                //System.out.println("DEPOIS do conclui index");
+                //indiceTeste.list();
 		System.out.println("========================Indice==================");
-		//System.out.println(indiceTeste);
+		System.out.println(indiceTeste);
 	}
 
 	
 	@Test
 	public void testGetNumDocumentos() {
+                //indiceTeste.list();
 		assertEquals(3,indiceTeste.getNumDocumentos());
 			
 	}
@@ -64,7 +68,7 @@ public class TesteEstruturaIndice {
 	}
 	@Test
 	public void testGetNumDocPerTerm() {
-                 indiceTeste.concluiIndexacao();
+                 //indiceTeste.concluiIndexacao();
 		 Map<String,Integer> mapNumDocPerTerm = indiceTeste.getNumDocPerTerm();
 		 //casa apareceu em dois documentos
 		 assertEquals(2,(int)mapNumDocPerTerm.get("casa"));
