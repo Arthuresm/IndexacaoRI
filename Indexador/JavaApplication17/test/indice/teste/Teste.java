@@ -15,19 +15,18 @@ import indice.estrutura.IndiceLight;
 public class Teste {
     
     public static void main(String[] args){
-        TesteEstruturaIndice simples = new TesteEstruturaIndice();
-        simples.iniciaIndice();
+        TesteEstruturaIndice indice = new TesteEstruturaIndice();
+        indice.iniciaIndice();
         
-//        simples.testGetNumDocumentos();
-//        simples.testGetListTermos();
-//        simples.testGetNumDocPerTerm();
-//        simples.testGetListOccur();
+        indice.testGetNumDocumentos();
+        indice.testGetListTermos();
+        indice.testGetNumDocPerTerm();
+        indice.testGetListOccur();
         
-//        TesteIndiceLight light = new TesteIndiceLight();
-//        light.testOrdenacao();
-//        
-//        
-//        TestePerformance perf = new TestePerformance();
-//        perf.testIndexPerformance();
+        TesteIndiceLight light = new TesteIndiceLight();
+        light.testOrdenacao();
+
+        TestePerformance perf = new TestePerformance();
+        perf.testIndexPerformance();
     }
 }

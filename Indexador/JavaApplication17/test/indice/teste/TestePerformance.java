@@ -49,30 +49,30 @@ public class TestePerformance {
 		System.out.println("Mem before:"+usedMemBefore/(1024.0*1024.0));
 		
 		//cria NUM_DOCS documentos cada um com NUM_TERM_PER_DOC percorrendo os 15625 termos
-		final int NUM_DOCS = 10;
-		final int NUM_TERM_PER_DOC = 8;
+		final int NUM_DOCS = 50; //Diminuir para 10 se demorar muito para rodar
+		final int NUM_TERM_PER_DOC = 500; //Diminuir para 8 se demorar muito para rodar
 		long tempo = System.currentTimeMillis();
 		int countTotal =0;
 		count = 0;
 
 			for(int d=0; d<NUM_DOCS ; d++){
-				
-				for(int term = 0; term<NUM_TERM_PER_DOC; term++){
-                                    if(1000>(usedMemBefore/(1024.0*1024.0))){
-					indiceTeste.index(vocabulario[(count+1)%15625], d, (count%10)+1);
-					//System.out.println("Index: "+count);
-					count = (count+1)%15625;
-					if(countTotal % 100000==0){
-						System.out.println("Indexando ocorrencia #"+countTotal);
-					}
-					countTotal++;
-                                        usedMemBefore = usedMem();
-                                        System.out.println("Mem used:"+usedMemBefore/(1024.0*1024.0));
-                                    }else{
-                                        System.out.println("Max heap size reached!");
-                                        break;
-                                    }    
-				}
+                            System.out.println("NUM DOC = " + d);
+                            for(int term = 0; term<NUM_TERM_PER_DOC; term++){
+                                if(1000>(usedMemBefore/(1024.0*1024.0))){
+                                    indiceTeste.index(vocabulario[(count+1)%15625], d, (count%10)+1);
+                                    //System.out.println("Index: "+count);
+                                    count = (count+1)%15625;
+                                    if(countTotal % 100000==0){
+                                            System.out.println("Indexando ocorrencia #"+countTotal);
+                                    }
+                                    countTotal++;
+                                    usedMemBefore = usedMem();
+                                    //System.out.println("Mem used:"+usedMemBefore/(1024.0*1024.0));
+                                }else{
+                                    System.out.println("Max heap size reached!");
+                                    break;
+                                }    
+                            }
                                 if(1000<=(usedMemBefore/(1024.0*1024.0)))
                                     break;
                                 //System.out.println("Proximo doc!");

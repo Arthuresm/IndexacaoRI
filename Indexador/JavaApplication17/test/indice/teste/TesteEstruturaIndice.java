@@ -15,12 +15,11 @@ import org.junit.Before;
 import org.junit.Test;
 
 public class TesteEstruturaIndice {
-	private IndiceLight indiceTeste ; //Depois alterar para indice
-	
+	private Indice indiceTeste ; 	
 	@Before
 	public void iniciaIndice(){
 //		indiceTeste = new IndiceSimples();
-		indiceTeste = new IndiceLight(10);
+		indiceTeste = new IndiceLight(1000);
 		
 		//casa apareceu 10 vezes no doc. 1
 		indiceTeste.index("casa",1,10);
