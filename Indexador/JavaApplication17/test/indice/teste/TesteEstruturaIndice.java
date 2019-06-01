@@ -46,7 +46,7 @@ public class TesteEstruturaIndice {
                 //System.out.println("DEPOIS do conclui index");
                 //indiceTeste.list();
 		System.out.println("========================Indice==================");
-		System.out.println(indiceTeste);
+		
 	}
 
 	

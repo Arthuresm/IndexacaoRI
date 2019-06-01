@@ -23,8 +23,8 @@ public class Teste {
         indice.testGetNumDocPerTerm();
         indice.testGetListOccur();
         
-        TesteIndiceLight light = new TesteIndiceLight();
-        light.testOrdenacao();
+//        TesteIndiceLight light = new TesteIndiceLight();
+//        light.testOrdenacao();
 
         TestePerformance perf = new TestePerformance();
         perf.testIndexPerformance();

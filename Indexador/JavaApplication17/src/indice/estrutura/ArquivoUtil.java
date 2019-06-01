@@ -1,3 +1,5 @@
+package indice.estrutura;
+
 
 
 import java.io.BufferedInputStream;

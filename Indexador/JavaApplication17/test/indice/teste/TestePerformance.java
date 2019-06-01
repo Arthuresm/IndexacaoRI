@@ -1,11 +1,16 @@
 package indice.teste;
 
+import indice.estrutura.ArquivoUtil;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import indice.estrutura.*;
+import java.io.File;
+import java.io.IOException;
 
 import java.util.HashSet;
 import java.util.Set;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.Test;
 
@@ -49,8 +54,8 @@ public class TestePerformance {
 		System.out.println("Mem before:"+usedMemBefore/(1024.0*1024.0));
 		
 		//cria NUM_DOCS documentos cada um com NUM_TERM_PER_DOC percorrendo os 15625 termos
-		final int NUM_DOCS = 50; //Diminuir para 10 se demorar muito para rodar
-		final int NUM_TERM_PER_DOC = 500; //Diminuir para 8 se demorar muito para rodar
+		final int NUM_DOCS = 50; //Diminuir se demorar muito para rodar
+		final int NUM_TERM_PER_DOC = 299; 
 		long tempo = System.currentTimeMillis();
 		int countTotal =0;
 		count = 0;
@@ -79,14 +84,24 @@ public class TestePerformance {
 			}
                 System.out.println("Concluindo indexacao!");
 		indiceTeste.concluiIndexacao();
-		
-		//System.out.println(indiceTeste);
+		System.out.println(indiceTeste.toString());
+                
 		System.out.println("Count: "+count);
 		System.out.println("Tempo de indexacao: "+(System.currentTimeMillis()-tempo)/(1000.0)+" segundos");
 		usedMemNow = usedMem();
 		System.out.println("mem. now: "+usedMemNow/(1024.0*1024));
-		
 		System.out.println("Uso de memória para indexar: "+(usedMemNow-usedMemBefore)/(1024.0*1024.0)+" mb");
+                
+                
+//                ArquivoUtil arq = new ArquivoUtil();
+//                
+//                try {
+//                    arq.gravaTexto(indiceTeste.toString(), new File("teste.txt"), false);
+//                } catch (IOException ex) {
+//                    Logger.getLogger(TestePerformance.class.getName()).log(Level.SEVERE, null, ex);
+//                }
+                
+                
 	}
 
 }

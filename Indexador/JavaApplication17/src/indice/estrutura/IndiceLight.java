@@ -120,7 +120,7 @@ public class IndiceLight extends Indice
                 arrFreqTermo[lastIdx] = freqTermo; 
                 
             }
-            System.gc();       
+            System.gc(); //Nao deve ser executado sempre
 	}
 
 	
@@ -216,9 +216,14 @@ public class IndiceLight extends Indice
             
             if(lastIdx>=0){
                 idAtual = arrTermId[0];
-                aux = idAtual;
                 numDocs.add(arrDocId[0]);
                 posInicial = 0;
+                
+                if(arrTermId.length > 1){
+                    aux = arrTermId[1];
+                }else{
+                    aux = idAtual;
+                }
             }
             for(int i=1; i <= lastIdx + 1; i++){
                 if((idAtual != aux) && (idAtual != 0)){
@@ -228,6 +233,7 @@ public class IndiceLight extends Indice
                     numDocs.add(arrDocId[i]);
                     posInicial = i - 1;
                     idAtual = arrTermId[i];
+                    
                 }else{
                     if(!numDocs.contains(arrDocId[i])){
                         numDocs.add(arrDocId[i]);
@@ -246,20 +252,19 @@ public class IndiceLight extends Indice
             }            
 	}
         
-        public void list(){
-            System.out.println("Apresentando ID's");
-            for(int i=0; i < lastIdx + 1; i++ ){
-                System.out.println(arrTermId[i]);
-            }
-            System.out.println("Apresentando DOC ID's");
-            for(int i=0; i < lastIdx + 1; i++ ){
-                System.out.println(arrDocId[i]);
-            }
-            System.out.println("Apresentando FREQ");
-            for(int i=0; i < lastIdx + 1; i++ ){
-                System.out.println(arrFreqTermo[i]);
-            }
+        public String list(){
+            Set<String> chaves = posicaoIndice.keySet();
+            Iterator<String> it = chaves.iterator();
+            String chave = null;
+            String Completa = "";
             
+            while(it.hasNext()){
+                chave = it.next();
+                Completa += "Chave = " + chave + " Valor<" + posicaoIndice.get(chave).getIdTermo();
+                Completa += "," + posicaoIndice.get(chave).getPosInicial() + "," + posicaoIndice.get(chave).getNumDocumentos();
+                Completa += ">\n";
+            }
+            return Completa;
         }
         
 	public void ordenaIndice()
