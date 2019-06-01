@@ -54,21 +54,22 @@ public class TestePerformance {
 		System.out.println("Mem before:"+usedMemBefore/(1024.0*1024.0));
 		
 		//cria NUM_DOCS documentos cada um com NUM_TERM_PER_DOC percorrendo os 15625 termos
-		final int NUM_DOCS = 50; //Diminuir se demorar muito para rodar
-		final int NUM_TERM_PER_DOC = 299; 
+		final int NUM_DOCS = 20000; //Diminuir se demorar muito para rodar
+		final int NUM_TERM_PER_DOC = 50; 
 		long tempo = System.currentTimeMillis();
 		int countTotal =0;
 		count = 0;
 
 			for(int d=0; d<NUM_DOCS ; d++){
-                            System.out.println("NUM DOC = " + d);
+//                            System.out.println("NUM DOC = " + d);
                             for(int term = 0; term<NUM_TERM_PER_DOC; term++){
                                 if(1000>(usedMemBefore/(1024.0*1024.0))){
                                     indiceTeste.index(vocabulario[(count+1)%15625], d, (count%10)+1);
                                     //System.out.println("Index: "+count);
                                     count = (count+1)%15625;
+                                    
                                     if(countTotal % 100000==0){
-                                            System.out.println("Indexando ocorrencia #"+countTotal);
+//                                            System.out.println("Indexando ocorrencia #"+countTotal);
                                     }
                                     countTotal++;
                                     usedMemBefore = usedMem();
@@ -84,7 +85,7 @@ public class TestePerformance {
 			}
                 System.out.println("Concluindo indexacao!");
 		indiceTeste.concluiIndexacao();
-		System.out.println(indiceTeste.toString());
+		System.out.println("Indexacao finalizada");
                 
 		System.out.println("Count: "+count);
 		System.out.println("Tempo de indexacao: "+(System.currentTimeMillis()-tempo)/(1000.0)+" segundos");
@@ -93,13 +94,13 @@ public class TestePerformance {
 		System.out.println("Uso de memória para indexar: "+(usedMemNow-usedMemBefore)/(1024.0*1024.0)+" mb");
                 
                 
-//                ArquivoUtil arq = new ArquivoUtil();
-//                
-//                try {
-//                    arq.gravaTexto(indiceTeste.toString(), new File("teste.txt"), false);
-//                } catch (IOException ex) {
-//                    Logger.getLogger(TestePerformance.class.getName()).log(Level.SEVERE, null, ex);
-//                }
+                ArquivoUtil arq = new ArquivoUtil();
+                
+                try {
+                    arq.gravaTexto(indiceTeste.toString(), new File("teste.txt"), false);
+                } catch (IOException ex) {
+                    Logger.getLogger(TestePerformance.class.getName()).log(Level.SEVERE, null, ex);
+                }
                 
                 
 	}

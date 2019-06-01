@@ -85,7 +85,7 @@ public abstract class Indice implements Serializable {
 			for(Ocorrencia o : getListOccur(termo)){
 				str.append("<"+o+">; ");
 			}
-			str.append("\n");
+			str.append("\n\n");
 			
 			
 		}

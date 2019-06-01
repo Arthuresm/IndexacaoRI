@@ -6,6 +6,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
+import java.util.Scanner;
 import java.util.Set;
 
 
@@ -50,6 +51,9 @@ public class IndiceLight extends Indice
             for(int i=0;i<vetor.length;i++){
                 newvet[i]=vetor[i];
             }
+
+            
+            
             return newvet;
         }
 	
@@ -83,10 +87,6 @@ public class IndiceLight extends Indice
 	@Override
 	public void index(String termo,int docId,int freqTermo){
             PosicaoVetor idDoTermo = posicaoIndice.get(termo); 
-            
-            int[] arrDocId = this.arrDocId;
-            int[] arrTermId = this.arrTermId; 
-            int[] arrFreqTermo = this.arrFreqTermo;
 //            System.out.println("Iremos inserir " + termo);
 //            System.out.println("lastIdx " + lastIdx);
             //Caso em que nao existe o termo no map
@@ -96,11 +96,11 @@ public class IndiceLight extends Indice
                 posicaoIndice.put(termo, idDoTermo);
                 
                 if(arrTermId.length-1 == lastIdx){
-                    arrTermId = aumentaCapacidadeVetor(arrTermId,10);
-                    arrDocId = aumentaCapacidadeVetor(arrDocId,10);
-                    arrFreqTermo = aumentaCapacidadeVetor(arrFreqTermo,10);
-                    setArrs(arrDocId, arrTermId, arrFreqTermo); 
-                    
+                    int[] arrTermId = aumentaCapacidadeVetor(this.arrTermId,10);
+                    int[] arrDocId = aumentaCapacidadeVetor(this.arrDocId,10);
+                    int[] arrFreqTermo = aumentaCapacidadeVetor(this.arrFreqTermo,10);
+                    setArrs(arrDocId, arrTermId, arrFreqTermo);
+                    System.gc(); //Nao deve ser executado sempre
                 }
                 lastIdx += 1;
                 arrTermId[lastIdx] = lastTermId;
@@ -109,10 +109,11 @@ public class IndiceLight extends Indice
                 
             } else {
                 if(arrTermId.length-1 == lastIdx){
-                    arrTermId = aumentaCapacidadeVetor(arrTermId,10);
-                    arrDocId = aumentaCapacidadeVetor(arrDocId,10);
-                    arrFreqTermo = aumentaCapacidadeVetor(arrFreqTermo,10);
+                    int[] arrTermId = aumentaCapacidadeVetor(this.arrTermId,10);
+                    int[] arrDocId = aumentaCapacidadeVetor(this.arrDocId,10);
+                    int[] arrFreqTermo = aumentaCapacidadeVetor(this.arrFreqTermo,10);
                     setArrs(arrDocId, arrTermId, arrFreqTermo);
+                    System.gc(); //Nao deve ser executado sempre
                 }
                 lastIdx += 1;
                 arrTermId[lastIdx] = idDoTermo.getIdTermo();
@@ -120,7 +121,7 @@ public class IndiceLight extends Indice
                 arrFreqTermo[lastIdx] = freqTermo; 
                 
             }
-            System.gc(); //Nao deve ser executado sempre
+            
 	}
 
 	
@@ -197,11 +198,10 @@ public class IndiceLight extends Indice
 	public void concluiIndexacao(){
             
             ordenaIndice();
-
-            Set<String> keys = posicaoIndice.keySet();
-            Iterator<String> keyAsIterator = keys.iterator();
-            int posInicial = 0;
             
+            Set<String> keys = posicaoIndice.keySet();
+            Iterator<String> keyAsIterator = keys.iterator();  
+            int posInicial = 0;
             int aux = -2; 
             int idAtual = 0;
             ArrayList <Integer> numDocs = new ArrayList<Integer>(); 
@@ -226,6 +226,10 @@ public class IndiceLight extends Indice
                 }
             }
             for(int i=1; i <= lastIdx + 1; i++){
+                if(i == (lastIdx/2)){
+                    System.out.println("50% Indexacao concluida");
+                    
+                }
                 if((idAtual != aux) && (idAtual != 0)){
                     arrTermoPorId[idAtual].setNumDocumentos(numDocs.size()); //Observe que ao alterar PosicaoVetor 
                     arrTermoPorId[idAtual].setPosInicial(posInicial);        //dentro do array alteramos no map - passagem por ref
@@ -346,7 +350,7 @@ public class IndiceLight extends Indice
             this.arrDocId = Arrays.copyOf(arrDocId, arrDocId.length);
             this.arrTermId = Arrays.copyOf(arrTermId, arrTermId.length);
             this.arrFreqTermo = Arrays.copyOf(arrFreqTermo, arrFreqTermo.length);
-            
+   
 	}
         
 	public int[] getArrDocId(){

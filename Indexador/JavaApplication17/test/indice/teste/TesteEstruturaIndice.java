@@ -40,12 +40,11 @@ public class TesteEstruturaIndice {
 		
 		//vermelho apareceu 1 vez no doc. 3
 		indiceTeste.index("vermelho",3,1);
-                //System.out.println("Antes do conclui index");
-		//indiceTeste.list();
+                
 		indiceTeste.concluiIndexacao();
-                //System.out.println("DEPOIS do conclui index");
-                //indiceTeste.list();
+                
 		System.out.println("========================Indice==================");
+                System.out.println(indiceTeste);
 		
 	}
 
